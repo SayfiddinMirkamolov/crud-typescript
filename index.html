@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Record Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h2 class="mt-4">Student Records</h2>
+        
+        <!-- Add Button -->
+        <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#studentModal">Qo'shish</button>
+
+        <!-- Student Table -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Ism</th>
+                    <th>Familiya</th>
+                    <th>Manzil</th>
+                    <th>Tug'ilgan kuni</th>
+                    <th>Lavozim</th>
+                    <th>Lavozim turi</th>
+                    <th>Maoshi</th>
+                    <th>Uylanganmi</th>
+                    <th>Faoliyat</th>
+                </tr>
+            </thead>
+            <tbody id="studentTableBody">
+                <!-- Dynamic Rows will be added here -->
+            </tbody>
+        </table>
+
+        <!-- Modal -->
+        <div class="modal fade" id="studentModal" tabindex="-1" aria-labelledby="studentModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="studentModalLabel">Student Record</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="studentForm">
+                            <input type="hidden" id="studentIndex">
+                            <div class="mb-3">
+                                <label for="firstName" class="form-label">Ism</label>
+                                <input type="text" class="form-control" id="firstName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="lastName" class="form-label">Familiya</label>
+                                <input type="text" class="form-control" id="lastName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Manzil</label>
+                                <input type="text" class="form-control" id="address" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="birthDate" class="form-label">Tug'ilgan kuni</label>
+                                <input type="date" class="form-control" id="birthDate" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="position" class="form-label">Lavozim</label>
+                                <select class="form-select" id="position" required>
+                                    <option value="ReactJs Developer">ReactJs Developer</option>
+                                    <option value="NodeJs Developer">NodeJs Developer</option>
+                                    <option value="Go Developer">Go Developer</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="typePosition" class="form-label">Lavozim turi</label>
+                                <select class="form-select" id="typePosition" required>
+                                    <option value="junior">Junior</option>
+                                    <option value="middle">Middle</option>
+                                    <option value="senior">Senior</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="salary" class="form-label">Maoshi</label>
+                                <input type="number" class="form-control" id="salary" required>
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="isMarried">
+                                <label for="isMarried" class="form-check-label">Uylanganmi</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Saqlash</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="./dist/main.js"></script>
+</body>
+
+</html>
