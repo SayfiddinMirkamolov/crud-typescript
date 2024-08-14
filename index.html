@@ -12,6 +12,31 @@
     <div class="container">
         <h2 class="mt-4">Student Records</h2>
         
+        <!-- Search and Filter Form -->
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <input type="text" class="form-control" id="searchFirstName" placeholder="Ism bo'yicha qidirish">
+            </div>
+            <div class="col-md-3">
+                <input type="text" class="form-control" id="searchLastName" placeholder="Familiya bo'yicha qidirish">
+            </div>
+            <div class="col-md-3">
+                <select class="form-select" id="filterPosition">
+                    <option value="">Barcha lavozimlar</option>
+                    <option value="ReactJs Developer">ReactJs Developer</option>
+                    <option value="NodeJs Developer">NodeJs Developer</option>
+                    <option value="Go Developer">Go Developer</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select class="form-select" id="filterIsMarried">
+                    <option value="">Barchasi</option>
+                    <option value="true">Uylangan</option>
+                    <option value="false">Uylanmagan</option>
+                </select>
+            </div>
+        </div>
+
         <!-- Add Button -->
         <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#studentModal">Qo'shish</button>
 
@@ -26,7 +51,9 @@
                     <th>Tug'ilgan kuni</th>
                     <th>Lavozim</th>
                     <th>Lavozim turi</th>
-                    <th>Maoshi</th>
+                    <th>
+                        <button class="btn btn-link p-0" id="sortSalary">Maoshi</button>
+                    </th>
                     <th>Uylanganmi</th>
                     <th>Faoliyat</th>
                 </tr>

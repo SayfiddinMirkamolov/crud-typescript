@@ -16,25 +16,33 @@ const studentTableBody = document.getElementById('studentTableBody') as HTMLTabl
 const studentModal = new bootstrap.Modal(document.getElementById('studentModal')!);
 const studentIndexInput = document.getElementById('studentIndex') as HTMLInputElement;
 
+const searchFirstNameInput = document.getElementById('searchFirstName') as HTMLInputElement;
+const searchLastNameInput = document.getElementById('searchLastName') as HTMLInputElement;
+const filterPositionSelect = document.getElementById('filterPosition') as HTMLSelectElement;
+const filterIsMarriedSelect = document.getElementById('filterIsMarried') as HTMLSelectElement;
+const sortSalaryButton = document.getElementById('sortSalary') as HTMLButtonElement;
+
+let sortAscending = true;
+
 studentForm.addEventListener('submit', function (e) {
 	e.preventDefault();
 
 	const student: Student = {
-			firstName: (document.getElementById('firstName') as HTMLInputElement).value,
-			lastName: (document.getElementById('lastName') as HTMLInputElement).value,
-			address: (document.getElementById('address') as HTMLInputElement).value,
-			birthDate: (document.getElementById('birthDate') as HTMLInputElement).value,
-			position: (document.getElementById('position') as HTMLSelectElement).value,
-			typePosition: (document.getElementById('typePosition') as HTMLSelectElement).value,
-			salary: parseFloat((document.getElementById('salary') as HTMLInputElement).value),
-			isMarried: (document.getElementById('isMarried') as HTMLInputElement).checked,
+		firstName: (document.getElementById('firstName') as HTMLInputElement).value,
+		lastName: (document.getElementById('lastName') as HTMLInputElement).value,
+		address: (document.getElementById('address') as HTMLInputElement).value,
+		birthDate: (document.getElementById('birthDate') as HTMLInputElement).value,
+		position: (document.getElementById('position') as HTMLSelectElement).value,
+		typePosition: (document.getElementById('typePosition') as HTMLSelectElement).value,
+		salary: parseFloat((document.getElementById('salary') as HTMLInputElement).value),
+		isMarried: (document.getElementById('isMarried') as HTMLInputElement).checked,
 	};
 
 	const studentIndex = studentIndexInput.value;
 	if (studentIndex) {
-			students[parseInt(studentIndex)] = student; // Update existing student
+		students[parseInt(studentIndex)] = student; // Update existing student
 	} else {
-			students.push(student); // Add new student
+		students.push(student); // Add new student
 	}
 
 	localStorage.setItem('students', JSON.stringify(students));
@@ -45,35 +53,61 @@ studentForm.addEventListener('submit', function (e) {
 });
 
 function renderStudents() {
+	let filteredStudents = students;
+
+	const searchFirstName = searchFirstNameInput.value.toLowerCase();
+	const searchLastName = searchLastNameInput.value.toLowerCase();
+	const filterPosition = filterPositionSelect.value;
+	const filterIsMarried = filterIsMarriedSelect.value;
+
+	if (searchFirstName) {
+		filteredStudents = filteredStudents.filter(student => student.firstName.toLowerCase().includes(searchFirstName));
+	}
+	if (searchLastName) {
+		filteredStudents = filteredStudents.filter(student => student.lastName.toLowerCase().includes(searchLastName));
+	}
+	if (filterPosition) {
+		filteredStudents = filteredStudents.filter(student => student.position === filterPosition);
+	}
+	if (filterIsMarried) {
+		filteredStudents = filteredStudents.filter(student => student.isMarried.toString() === filterIsMarried);
+	}
+
+	if (!sortAscending) {
+		filteredStudents.sort((a, b) => b.salary - a.salary);
+	} else {
+		filteredStudents.sort((a, b) => a.salary - b.salary);
+	}
+
 	studentTableBody.innerHTML = '';
-	students.forEach((student, index) => {
-			const row = document.createElement('tr');
+	filteredStudents.forEach((student, index) => {
+		const row = document.createElement('tr');
 
-			row.innerHTML = `
-					<td>${index + 1}</td>
-					<td>${student.firstName}</td>
-					<td>${student.lastName}</td>
-					<td>${student.address}</td>
-					<td>${student.birthDate}</td>
-					<td>${student.position}</td>
-					<td>${student.typePosition}</td>
-					<td>${student.salary}</td>
-					<td>${student.isMarried ? 'Ha' : 'Yo\'q'}</td>
-					<td>
-							<button class="btn btn-sm btn-primary" onclick="editStudent(${index})">Tahrirlash</button>
-							<button class="btn btn-sm btn-danger" onclick="deleteStudent(${index})">O'chirish</button>
-					</td>
-			`;
+		row.innerHTML = `
+			<td>${index + 1}</td>
+			<td>${student.firstName}</td>
+			<td>${student.lastName}</td>
+			<td>${student.address}</td>
+			<td>${student.birthDate}</td>
+			<td>${student.position}</td>
+			<td>${student.typePosition}</td>
+			<td>${student.salary}</td>
+			<td>${student.isMarried ? 'Ha' : 'Yo\'q'}</td>
+			<td>
+				<button class="btn btn-sm btn-primary" onclick="editStudent(${index})">Tahrirlash</button>
+				<button class="btn btn-sm btn-danger" onclick="deleteStudent(${index})">O'chirish</button>
+			</td>
+		`;
 
-			studentTableBody.appendChild(row);
+		studentTableBody.appendChild(row);
 	});
 }
 
 function loadStudents() {
 	const storedStudents = localStorage.getItem('students');
 	if (storedStudents) {
-			students = JSON.parse(storedStudents);
-			renderStudents();
+		students = JSON.parse(storedStudents);
+		renderStudents();
 	}
 }
 
@@ -97,5 +131,15 @@ function deleteStudent(index: number) {
 	localStorage.setItem('students', JSON.stringify(students));
 	renderStudents();
 }
+
+sortSalaryButton.addEventListener('click', function () {
+	sortAscending = !sortAscending;
+	renderStudents();
+});
+
+searchFirstNameInput.addEventListener('input', renderStudents);
+searchLastNameInput.addEventListener('input', renderStudents);
+filterPositionSelect.addEventListener('change', renderStudents);
+filterIsMarriedSelect.addEventListener('change', renderStudents);
 
 window.onload = loadStudents;
